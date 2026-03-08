@@ -1263,6 +1263,189 @@ background:#007fff;
             }
         });
     </script>
+
+<!--Full Donation Popup-->
+    
+<style>
+    
+/* Donate Button */
+
+.donate-btn{
+background:linear-gradient(45deg,#ff7a18,#ff3d77);
+color:white;
+border:none;
+padding:9px 18px;
+border-radius:25px;
+font-size:14px;
+font-weight:bold;
+cursor:pointer;
+box-shadow:0 4px 10px rgba(0,0,0,0.2);
+transition:0.3s;
+}
+
+.donate-btn:hover{
+transform:scale(1.05);
+}
+
+/* Popup */
+
+.donate-popup{
+display:none;
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:rgba(0,0,0,0.6);
+justify-content:center;
+align-items:center;
+z-index:9999;
+}
+
+.donate-box{
+background:white;
+padding:30px;
+border-radius:12px;
+max-width:420px;
+width:90%;
+text-align:center;
+font-family:Arial;
+}
+
+.donate-box h2{
+color:#0ea5e9;
+margin-bottom:10px;
+}
+
+.method{
+margin-top:20px;
+}
+
+.wallet{
+background:#f4f8fb;
+padding:10px;
+border-radius:6px;
+font-size:13px;
+word-break:break-all;
+}
+
+.copy-btn{
+margin-top:5px;
+padding:5px 10px;
+background:#0ea5e9;
+color:white;
+border:none;
+border-radius:4px;
+cursor:pointer;
+}
+
+.qr{
+margin-top:10px;
+}
+
+.bkash{
+background:#e2136e;
+color:white;
+padding:10px;
+border-radius:6px;
+margin-top:10px;
+font-weight:bold;
+}
+
+.close-btn{
+margin-top:20px;
+padding:8px 16px;
+background:#999;
+color:white;
+border:none;
+border-radius:5px;
+cursor:pointer;
+}
+
+</style>
+
+<div class="donate-popup" id="donatePopup">
+
+<div class="donate-box">
+
+<h2>Support MultiTool-BD ❤️</h2>
+<p>If our tools help you, consider supporting us.</p>
+
+<!-- Bitcoin -->
+
+<div class="method">
+<h3>Bitcoin</h3>
+
+<div class="wallet" id="btc">
+1DBphcN4MtkJVabBqu3kG4JczsMAiU8hPc
+</div>
+
+<button class="copy-btn" onclick="copyWallet('btc')">Copy Address</button>
+
+<div class="qr">
+<img src="https://api.qrserver.com/v1/create-qr-code/?size=140x140&data=YOUR_BTC_ADDRESS">
+</div>
+</div>
+
+
+<!-- USDT -->
+
+<div class="method">
+<h3>USDT (TRC20)</h3>
+
+<div class="wallet" id="usdt">
+TKNjbt8XYER5GaeGw8E6z8MPgLBcGY5Qjo
+</div>
+
+<button class="copy-btn" onclick="copyWallet('usdt')">Copy Address</button>
+
+<div class="qr">
+<img src="https://api.qrserver.com/v1/create-qr-code/?size=140x140&data=YOUR_USDT_ADDRESS">
+</div>
+</div>
+
+
+<!-- bKash -->
+
+<div class="method">
+<h3>bKash (Bangladesh)</h3>
+
+<div class="bkash">
+Send via bKash: 01766020093
+</div>
+
+<p style="font-size:12px;margin-top:5px;">
+After sending, email the transaction ID.
+</p>
+
+</div>
+
+
+<button class="close-btn" onclick="closeDonate()">Close</button>
+
+</div>
+</div>
+
+
+
+<script>
+
+function openDonate(){
+document.getElementById("donatePopup").style.display="flex";
+}
+
+function closeDonate(){
+document.getElementById("donatePopup").style.display="none";
+}
+
+function copyWallet(id){
+var text=document.getElementById(id).innerText;
+navigator.clipboard.writeText(text);
+alert("Wallet address copied!");
+}
+
+</script>
+    
 </body>
 </html>
 
