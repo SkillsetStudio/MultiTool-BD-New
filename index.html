@@ -6,6 +6,139 @@
     <title>MultiTool-BD - Your Daily Tools, All in One Place</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
+
+:root {
+  --primary-gradient: linear-gradient(45deg, #f97316, #f43f5e);
+}
+
+.donate-fab {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 999;
+  background: var(--primary-gradient);
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 50px;
+  font-weight: bold;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 4px 15px rgba(244, 63, 94, 0.3);
+  transition: transform 0.2s;
+}
+
+.donate-fab:hover { transform: scale(1.05); }
+
+.donate-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.6);
+  backdrop-filter: blur(4px);
+  z-index: 1000;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+
+.donate-modal {
+  background: white;
+  width: 100%;
+  max-width: 420px;
+  max-height: 90vh;
+  border-radius: 24px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25);
+  animation: slideUp 0.3s ease-out;
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(20px) scale(0.95); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.donate-header {
+  padding: 24px;
+  border-bottom: 1px solid #f3f4f6;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.donate-header h2 { margin: 0; font-size: 22px; color: #111827; }
+.donate-header p { margin: 4px 0 0; font-size: 14px; color: #6b7280; }
+
+.close-x {
+  background: none; border: none; font-size: 28px; color: #9ca3af; cursor: pointer;
+}
+
+.donate-content {
+  padding: 24px;
+  overflow-y: auto;
+}
+
+.method-item { margin-bottom: 24px; }
+.method-label { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+.method-label h3 { margin: 0; font-size: 16px; color: #374151; }
+
+.icon-box {
+  width: 32px; height: 32px; border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  color: white; font-weight: bold;
+}
+
+.btc-bg { background: #f59e0b; }
+.usdt-bg { background: #10b981; }
+.bkash-bg { background: #d1126d; }
+.binance-bg { background: #f3ba2f; color: black; }
+
+.address-container {
+  background: #f9fafb; border: 1px solid #e5e7eb;
+  padding: 12px; border-radius: 12px;
+  display: flex; justify-content: space-between; align-items: center;
+}
+
+.address-text {
+  font-family: monospace; font-size: 13px; color: #4b5563;
+  word-break: break-all; margin-right: 10px;
+}
+
+.copy-btn {
+  background: none; border: none; color: #9ca3af; cursor: pointer; padding: 4px;
+}
+
+.qr-box { text-align: center; margin-top: 12px; }
+.qr-box img { width: 120px; height: 120px; border: 1px solid #f3f4f6; padding: 8px; border-radius: 12px; }
+
+.bkash-card {
+  background: #fff1f2; border: 1px solid #ffe4e6;
+  padding: 16px; border-radius: 12px; text-align: center;
+}
+
+.bkash-num { font-weight: bold; font-size: 18px; color: #be123c; margin: 0; }
+.bkash-sub { font-size: 12px; color: #e11d48; margin: 4px 0; }
+.bkash-note { font-size: 9px; font-weight: bold; color: #fb7185; letter-spacing: 0.5px; }
+
+.binance-link {
+  display: block; width: 100%; background: #f3ba2f; color: black;
+  text-decoration: none; text-align: center; padding: 14px;
+  border-radius: 12px; font-weight: bold; transition: background 0.2s;
+}
+
+.binance-link:hover { background: #eab308; }
+
+.donate-footer { padding: 16px; text-align: center; background: #f9fafb; }
+.donate-footer button { background: none; border: none; color: #9ca3af; cursor: pointer; font-size: 14px; }
+
+/* Scrollbar Style */
+.donate-content::-webkit-scrollbar { width: 5px; }
+.donate-content::-webkit-scrollbar-thumb { background: #e5e7eb; border-radius: 10px; }
+        
         :root {
             --primary-blue: #2563eb;
             --dark-blue: #1e40af;
@@ -511,8 +644,86 @@
             <a href="#" class="logo">MultiTool-<span>BD</span></a>
             
             <nav>
+                
+<!-- Donate Button -->
+<button class="donate-fab" onclick="toggleDonate(true)">
+  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>
+  Donate
+</button>
+<!-- Donation Popup Overlay -->
+<div class="donate-overlay" id="donateOverlay" onclick="handleOverlayClick(event)">
+  <div class="donate-modal">
+    <!-- Header -->
+    <div class="donate-header">
+      <div>
+        <h2>Support Us <span style="color: #f43f5e;">❤️</span></h2>
+        <p>Your support keeps MultiTool-BD alive.</p>
+      </div>
+      <button class="close-x" onclick="toggleDonate(false)">&times;</button>
+    </div>
 
-              
+    <!-- Scrollable Content -->
+    <div class="donate-content">
+      <!-- Bitcoin -->
+      <div class="method-item">
+        <div class="method-label">
+          <span class="icon-box btc-bg">₿</span>
+          <h3>Bitcoin</h3>
+        </div>
+        <div class="address-container">
+          <div class="address-text" id="btcAddr">1DBphcN4MtkJVabBqu3kG4JczsMAiU8hPc</div>
+          <button class="copy-btn" onclick="copyText('btcAddr', this)">
+            <svg class="copy-icon" viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+          </button>
+        </div>
+        <div class="qr-box">
+          <img src="https://api.qrserver.com/v1/create-qr-code/?size=140x140&data=bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh" alt="BTC QR">
+        </div>
+      </div>
+
+      <!-- USDT -->
+      <div class="method-item">
+        <div class="method-label">
+          <span class="icon-box usdt-bg">₮</span>
+          <h3>USDT (TRC20)</h3>
+        </div>
+        <div class="address-container">
+          <div class="address-text" id="usdtAddr">TKNjbt8XYER5GaeGw8E6z8MPgLBcGY5Qjo</div>
+          <button class="copy-btn" onclick="copyText('usdtAddr', this)">
+            <svg class="copy-icon" viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- bKash -->
+      <div class="method-item">
+        <div class="method-label">
+          <span class="icon-box bkash-bg">৳</span>
+          <h3>bKash (BD)</h3>
+        </div>
+        <div class="bkash-card">
+          <p class="bkash-num">01842020093</p>
+          <p class="bkash-sub">Personal • Send Money</p>
+          <p class="bkash-note">EMAIL TRANSACTION ID AFTER SENDING</p>
+        </div>
+      </div>
+
+      <!-- Binance -->
+      <div class="method-item">
+        <div class="method-label">
+          <span class="icon-box binance-bg">B</span>
+          <h3>Binance Pay</h3>
+        </div>
+        <a href="https://pay.binance.com/en/pay?id=778962944" target="_blank" class="binance-link">Pay with Binance</a>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="donate-footer">
+      <button onclick="toggleDonate(false)">Maybe later</button>
+    </div>
+  </div>
+</div>
                 <ul>
                     <li><a href="#home">Home</a></li>
                     <li><a href="#tools">Tools</a></li>
@@ -1236,132 +1447,32 @@ background:#007fff;
         });
     </script>
 
-<!--Full Donation Popup-->
-    <!-- 1. Header Donate Button -->
-<button class="donate-btn" onclick="openDonate()" style="position:absolute;top:20px;right:20px;">❤️ Donate</button>
-
-<!-- 2. Donation Popup -->
-<div class="donate-popup" id="donatePopup">
-  <div class="donate-box">
-
-    <h2>Support MultiTool-BD ❤️</h2>
-    <p>If our tools help you, consider supporting us.</p>
-
-    <!-- Bitcoin -->
-    <div class="method">
-      <h3>Bitcoin</h3>
-      <div class="wallet" id="btc">YOUR_BTC_ADDRESS</div>
-      <button class="copy-btn" onclick="copyWallet('btc')">Copy Address</button>
-      <div class="qr">
-        <img src="https://api.qrserver.com/v1/create-qr-code/?size=140x140&data=YOUR_BTC_ADDRESS">
-      </div>
-    </div>
-
-    <!-- USDT -->
-    <div class="method">
-      <h3>USDT (TRC20)</h3>
-      <div class="wallet" id="usdt">YOUR_USDT_ADDRESS</div>
-      <button class="copy-btn" onclick="copyWallet('usdt')">Copy Address</button>
-      <div class="qr">
-        <img src="https://api.qrserver.com/v1/create-qr-code/?size=140x140&data=YOUR_USDT_ADDRESS">
-      </div>
-    </div>
-
-    <!-- bKash -->
-    <div class="method">
-      <h3>bKash (Bangladesh)</h3>
-      <div class="bkash">Send via bKash: 01XXXXXXXXX</div>
-      <p style="font-size:12px;margin-top:5px;">After sending, email the transaction ID.</p>
-    </div>
-
-    <!-- Binance Pay -->
-    <div class="method">
-      <h3>Binance Pay</h3>
-      <a href="https://pay.binance.com/en/pay?id=YOUR_BINANCE_PAY_ID" target="_blank">
-        <button class="binance-btn">Pay with Binance</button>
-      </a>
-    </div>
-
-    <button class="close-btn" onclick="closeDonate()">Close</button>
-
-  </div>
-</div>
-
-<!-- 3. Styles -->
-<style>
-.donate-btn{
-  background:linear-gradient(45deg,#ff7a18,#ff3d77);
-  color:white;
-  border:none;
-  padding:9px 18px;
-  border-radius:25px;
-  font-size:14px;
-  font-weight:bold;
-  cursor:pointer;
-  box-shadow:0 4px 10px rgba(0,0,0,0.2);
-  transition:0.3s;
-  z-index:10000;
-  position:fixed;
-}
-.donate-btn:hover{ transform:scale(1.05); }
-
-.donate-popup{
-  display:none;
-  position:fixed;
-  top:0; left:0;
-  width:100%; height:100%;
-  background:rgba(0,0,0,0.6);
-  justify-content:center;
-  align-items:center;
-  z-index:9999;
-  flex-direction:column;
-}
-
-.donate-popup .donate-box{
-  background:white;
-  padding:30px;
-  border-radius:12px;
-  max-width:420px;
-  width:90%;
-  text-align:center;
-  font-family:Arial;
-}
-
-.donate-box h2{ color:#0ea5e9; margin-bottom:10px; }
-
-.method{ margin-top:20px; }
-
-.wallet{ background:#f4f8fb; padding:10px; border-radius:6px; font-size:13px; word-break:break-all; }
-
-.copy-btn{ margin-top:5px; padding:5px 10px; background:#0ea5e9; color:white; border:none; border-radius:4px; cursor:pointer; }
-
-.qr{ margin-top:10px; }
-
-.bkash{ background:#e2136e; color:white; padding:10px; border-radius:6px; margin-top:10px; font-weight:bold; }
-
-.binance-btn{ background:#f3ba2f; color:#000; border:none; padding:10px 18px; border-radius:6px; font-weight:bold; cursor:pointer; font-size:14px; box-shadow:0 3px 8px rgba(0,0,0,0.2); }
-
-.binance-btn:hover{ background:#e5a800; transform:scale(1.05); }
-
-.close-btn{ margin-top:20px; padding:8px 16px; background:#999; color:white; border:none; border-radius:5px; cursor:pointer; }
-</style>
-
-<!-- 4. JS -->
+    
 <script>
-function openDonate(){ 
-  var popup = document.getElementById("donatePopup");
-  popup.style.display = "flex";
+function toggleDonate(show) {
+  const overlay = document.getElementById('donateOverlay');
+  overlay.style.display = show ? 'flex' : 'none';
+  // Prevent body scroll when open
+  document.body.style.overflow = show ? 'hidden' : 'auto';
 }
-function closeDonate(){ 
-  var popup = document.getElementById("donatePopup");
-  popup.style.display = "none";
+
+function handleOverlayClick(e) {
+  if (e.target.id === 'donateOverlay') toggleDonate(false);
 }
-function copyWallet(id){
-  var text=document.getElementById(id).innerText;
-  navigator.clipboard.writeText(text);
-  alert("Wallet address copied!");
+
+async function copyText(id, btn) {
+  const text = document.getElementById(id).innerText;
+  try {
+    await navigator.clipboard.writeText(text);
+    const originalHTML = btn.innerHTML;
+    btn.innerHTML = '<span style="color: #10b981">✓</span>';
+    setTimeout(() => { btn.innerHTML = originalHTML; }, 2000);
+  } catch (err) {
+    console.error('Failed to copy: ', err);
+  }
 }
-</script>
+ </script>  
+
     
 </body>
 </html>
