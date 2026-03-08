@@ -94,7 +94,7 @@
 
 .btc-bg { background: #f59e0b; }
 .usdt-bg { background: #10b981; }
-.bkash-bg { background: #d1126d; }
+.merchant-bg { background: #ec4899; } /* Pink */
 .binance-bg { background: #f3ba2f; color: black; }
 
 .address-container {
@@ -112,18 +112,22 @@
   background: none; border: none; color: #9ca3af; cursor: pointer; padding: 4px;
 }
 
-.qr-box { text-align: center; margin-top: 12px; }
-.qr-box img { width: 120px; height: 120px; border: 1px solid #f3f4f6; padding: 8px; border-radius: 12px; }
-
 .bkash-card {
-  background: #fff1f2; border: 1px solid #ffe4e6;
   padding: 16px; border-radius: 12px; text-align: center;
 }
 
-.bkash-num { font-weight: bold; font-size: 18px; color: #be123c; margin: 0; }
-.bkash-sub { font-size: 12px; color: #e11d48; margin: 4px 0; }
-.bkash-note { font-size: 9px; font-weight: bold; color: #fb7185; letter-spacing: 0.5px; }
+.merchant-border { background: #fff1f2; border: 1px solid #fecdd3; }
 
+.bkash-num { font-weight: bold; font-size: 18px; margin: 0; }
+
+.merchant-text { color: #be123c; }
+
+.merchant-details {
+  margin-top: 10px; padding-top: 10px; border-top: 1px dashed #fda4af;
+  display: flex; justify-content: space-around; font-size: 11px; color: #e11d48;
+  text-transform: uppercase; font-weight: 600;
+}
+        
 .binance-link {
   display: block; width: 100%; background: #f3ba2f; color: black;
   text-decoration: none; text-align: center; padding: 14px;
@@ -676,9 +680,6 @@
             <svg class="copy-icon" viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
           </button>
         </div>
-        <div class="qr-box">
-          <img src="https://api.qrserver.com/v1/create-qr-code/?size=140x140&data=bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh" alt="BTC QR">
-        </div>
       </div>
 
       <!-- USDT -->
@@ -695,16 +696,19 @@
         </div>
       </div>
 
-      <!-- bKash -->
+ <!-- bKash Merchant (NEW) -->
       <div class="method-item">
         <div class="method-label">
-          <span class="icon-box bkash-bg">৳</span>
-          <h3>bKash (BD)</h3>
+          <span class="icon-box merchant-bg">M</span>
+          <h3>bKash Merchant (Payment)</h3>
         </div>
-        <div class="bkash-card">
-          <p class="bkash-num">01842020093</p>
-          <p class="bkash-sub">Personal • Send Money</p>
-          <p class="bkash-note">EMAIL TRANSACTION ID AFTER SENDING</p>
+        <div class="bkash-card merchant-border">
+          <p class="bkash-num merchant-text">01766020093</p>
+          <p class="bkash-sub">Merchant Account • Use "Make Payment"</p>
+          <div class="merchant-details">
+            <span>Ref: <b>Donation</b></span>
+            <span>Counter: <b>1</b></span>
+          </div>
         </div>
       </div>
 
