@@ -1,314 +1,231 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Make Passport Size Photo - MultiTool-BD</title>
-  <style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Passport Photo Maker - MultiTool-BD</title>
 
-    body {
-      background-color: var(--bg-color);
-      color: var(--text-color);
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      flex-direction: column;
-      min-height: 100vh;
-      margin: 0;
-      padding: 1rem;
-      box-sizing: border-box;
-    }
+<style>
 
-    .container {
-      padding: 2rem;
-      border-radius: 16px;
-      max-width: 600px;
-      width: 100%;
-      box-shadow: 0 10px 25px rgba(37, 99, 235, 0.1);
-      background-color: #ffffff;
-      border: 1px solid rgba(37, 99, 235, 0.1);
-      text-align: center;
-    }
+body{
+font-family:Arial,Helvetica,sans-serif;
+background:#f2f8ff;
+margin:0;
+padding:0;
+text-align:center;
+}
 
-    h1 {
-      margin-top: 0;
-      font-size: 1.8rem;
-      font-weight: 700;
-    }
+header{
+background:#0a84ff;
+color:white;
+padding:15px;
+font-size:22px;
+font-weight:bold;
+}
 
-    .upload-area {
-      border: 2px dashed var(--border-color);
-      padding: 2rem;
-      border-radius: 12px;
-      margin-top: 1.5rem;
-      cursor: pointer;
-      transition: background 0.3s;
-    }
+.container{
+max-width:900px;
+margin:auto;
+padding:20px;
+}
 
-    .upload-area:hover {
-      background-color: rgba(37, 99, 235, 0.05);
-    }
+.tool-box{
+background:white;
+padding:20px;
+border-radius:10px;
+box-shadow:0 4px 10px rgba(0,0,0,0.1);
+}
 
-    input[type="file"] {
-      display: none;
-    }
+input,select,button{
+padding:10px;
+margin:8px;
+border-radius:6px;
+border:1px solid #ccc;
+font-size:14px;
+}
 
-    .controls {
-      margin-top: 1.5rem;
-      display: flex;
-      flex-direction: column;
-      gap: 1rem;
-    }
+button{
+background:#0a84ff;
+color:white;
+border:none;
+cursor:pointer;
+}
 
-    label {
-      text-align: left;
-      font-weight: 600;
-      font-size: 0.9rem;
-      margin-bottom: -0.5rem;
-    }
+button:hover{
+background:#006fe0;
+}
 
-    select, button {
-      width: 100%;
-      padding: 0.8rem;
-      border: 2px solid var(--border-color);
-      border-radius: 8px;
-      font-size: 1rem;
-      color: var(--text-color);
-      background-color: #ffffff;
-      box-sizing: border-box;
-      outline: none;
-    }
+canvas{
+margin-top:20px;
+max-width:100%;
+border:2px dashed #0a84ff;
+border-radius:6px;
+}
 
-    button {
-      background-color: var(--primary-color);
-      color: white;
-      font-weight: 600;
-      cursor: pointer;
-      border: none;
-      transition: background 0.3s, transform 0.1s;
-    }
+.footer{
+margin-top:20px;
+font-size:12px;
+color:#777;
+}
 
-    button:hover {
-      background-color: var(--primary-hover);
-    }
+@media(max-width:600px){
 
-    button:active {
-      transform: scale(0.98);
-    }
+header{
+font-size:18px;
+}
 
-    .preview-section {
-      margin-top: 2rem;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 1rem;
-    }
+input,select,button{
+width:100%;
+margin-top:10px;
+}
 
-    .preview-box {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
+}
 
-    .preview-box p {
-      font-size: 0.8rem;
-      font-weight: 600;
-      margin-bottom: 0.5rem;
-      opacity: 0.7;
-    }
-
-    img {
-      max-width: 100%;
-      height: auto;
-      border-radius: 8px;
-      border: 1px solid rgba(37, 99, 235, 0.2);
-      background-color: #f8fafc;
-    }
-
-    .download-section {
-      margin-top: 1.5rem;
-      display: flex;
-      flex-direction: column;
-      gap: 0.5rem;
-    }
-
-    .download-btn {
-      display: block;
-      padding: 0.8rem;
-      background-color: var(--primary-color);
-      color: white;
-      text-align: center;
-      border-radius: 8px;
-      text-decoration: none;
-      font-weight: 600;
-      transition: background 0.3s;
-    }
-
-    .download-btn:hover {
-      background-color: var(--primary-hover);
-    }
-
-    @media (max-width: 480px) {
-      .preview-section {
-        grid-template-columns: 1fr;
-      }
-      .container {
-        padding: 1.5rem;
-      }
-      h1 {
-        font-size: 1.5rem;
-      }
-    }
-
-    .hidden {
-      display: none;
-    }
-
-    .footer {
-      margin-top: 2rem;
-      font-size: 0.8rem;
-      opacity: 0.6;
-    }
-  </style>
+</style>
 </head>
+
 <body>
-  <div class="container">
-    <h1>Make Passport Size Photo</h1>
-    
-    <div class="upload-area" onclick="document.getElementById('imageInput').click()">
-      <p id="uploadText">Click to upload your photo</p>
-      <input type="file" id="imageInput" accept="image/*" />
-    </div>
 
-    <div class="controls">
-      <label for="sizeSelect">Select Passport Size:</label>
-      <select id="sizeSelect">
-        <option value="us">US Standard (2x2 inch)</option>
-        <option value="uk">UK/EU/India (35x45 mm)</option>
-        <option value="china">China (33x48 mm)</option>
-        <option value="custom">Custom Square (1x1 inch)</option>
-      </select>
+<header>
+📷 Passport Photo Maker
+</header>
 
-      <label for="formatSelect">Output Format:</label>
-      <select id="formatSelect">
-        <option value="png">PNG</option>
-        <option value="jpeg">JPG</option>
-        <option value="webp">WebP</option>
-      </select>
+<div class="container">
 
-      <button onclick="generatePassportPhoto()">Generate Passport Photo</button>
-    </div>
+<div class="tool-box">
 
-    <div id="resultArea" class="hidden">
-      <div class="preview-section">
-        <div class="preview-box">
-          <p>Original</p>
-          <img id="originalPreview" src="" alt="Original">
-        </div>
-        <div class="preview-box">
-          <p>Passport Result</p>
-          <img id="passportPreview" src="" alt="Passport Result">
-        </div>
-      </div>
+<h3>Upload Your Photo</h3>
 
-      <div class="download-section">
-        <a id="downloadBtn" class="download-btn" href="#" download="passport-photo.png">Download Photo</a>
-      </div>
-    </div>
-  </div>
+<input type="file" id="upload" accept="image/*">
 
-  <div class="footer">
-    &copy; 2026 MultiTool-BD. All rights reserved.
-  </div>
+<br>
 
-  <script>
-    let originalImage = null;
+<label>Choose Passport Format</label>
 
-    const SIZES = {
-      us: { width: 600, height: 600, label: '2x2 inch' },
-      uk: { width: 413, height: 531, label: '35x45 mm' },
-      china: { width: 390, height: 567, label: '33x48 mm' },
-      custom: { width: 300, height: 300, label: '1x1 inch' }
-    };
+<select id="format">
 
-    document.getElementById('imageInput').addEventListener('change', function(e) {
-      const file = e.target.files[0];
-      if (!file) return;
+<option value="us">US Passport (2x2 inch)</option>
+<option value="eu">UK / EU / India (35x45 mm)</option>
+<option value="china">China (33x48 mm)</option>
+<option value="square">Custom Square</option>
 
-      const reader = new FileReader();
-      reader.onload = function(event) {
-        const img = new Image();
-        img.onload = function() {
-          originalImage = img;
-          document.getElementById('originalPreview').src = event.target.result;
-          document.getElementById('uploadText').innerText = "File: " + file.name;
-          document.getElementById('resultArea').classList.remove('hidden');
-          // Auto generate on upload
-          generatePassportPhoto();
-        };
-        img.src = event.target.result;
-      };
-      reader.readAsDataURL(file);
-    });
+</select>
 
-    function generatePassportPhoto() {
-      if (!originalImage) {
-        alert("Please upload an image first.");
-        return;
-      }
+<br>
 
-      const sizeKey = document.getElementById('sizeSelect').value;
-      const format = document.getElementById('formatSelect').value;
-      const targetSize = SIZES[sizeKey];
+<label>Download Format</label>
 
-      const canvas = document.createElement('canvas');
-      const ctx = canvas.getContext('2d');
+<select id="downloadFormat">
 
-      canvas.width = targetSize.width;
-      canvas.height = targetSize.height;
+<option value="image/png">PNG</option>
+<option value="image/jpeg">JPG</option>
+<option value="image/webp">WebP</option>
 
-      // Center crop logic
-      const imgAspect = originalImage.width / originalImage.height;
-      const targetAspect = targetSize.width / targetSize.height;
+</select>
 
-      let sourceX, sourceY, sourceWidth, sourceHeight;
+<br>
 
-      if (imgAspect > targetAspect) {
-        // Image is wider than target
-        sourceHeight = originalImage.height;
-        sourceWidth = originalImage.height * targetAspect;
-        sourceX = (originalImage.width - sourceWidth) / 2;
-        sourceY = 0;
-      } else {
-        // Image is taller than target
-        sourceWidth = originalImage.width;
-        sourceHeight = originalImage.width / targetAspect;
-        sourceX = 0;
-        sourceY = (originalImage.height - sourceHeight) / 2;
-      }
+<button onclick="processImage()">Generate Passport Photo</button>
 
-      // Draw the cropped image
-      ctx.drawImage(
-        originalImage,
-        sourceX, sourceY, sourceWidth, sourceHeight,
-        0, 0, targetSize.width, targetSize.height
-      );
+<br>
 
-      const mimeType = 'image/' + (format === 'jpg' ? 'jpeg' : format);
-      const dataUrl = canvas.toDataURL(mimeType, 0.9);
-      
-      const passportPreview = document.getElementById('passportPreview');
-      passportPreview.src = dataUrl;
+<canvas id="canvas"></canvas>
 
-      const downloadBtn = document.getElementById('downloadBtn');
-      downloadBtn.href = dataUrl;
-      downloadBtn.download = `passport-photo-${sizeKey}.${format}`;
-      
-      // Scroll to result on mobile
-      if (window.innerWidth < 768) {
-        document.getElementById('resultArea').scrollIntoView({ behavior: 'smooth' });
-      }
-    }
-  </script>
+<br>
+
+<button onclick="downloadImage()">Download Photo</button>
+
+</div>
+
+<div class="footer">
+MultiTool-BD Passport Photo Tool
+</div>
+
+</div>
+
+<script>
+
+let canvas=document.getElementById("canvas")
+let ctx=canvas.getContext("2d")
+
+let img=new Image()
+
+document.getElementById("upload").addEventListener("change",function(e){
+
+let reader=new FileReader()
+
+reader.onload=function(event){
+
+img.src=event.target.result
+
+}
+
+reader.readAsDataURL(e.target.files[0])
+
+})
+
+function getSize(){
+
+let format=document.getElementById("format").value
+
+if(format==="us"){
+return {w:600,h:600}
+}
+
+if(format==="eu"){
+return {w:413,h:531}
+}
+
+if(format==="china"){
+return {w:390,h:567}
+}
+
+if(format==="square"){
+return {w:600,h:600}
+}
+
+}
+
+function processImage(){
+
+let size=getSize()
+
+canvas.width=size.w
+canvas.height=size.h
+
+let min=Math.min(img.width,img.height)
+
+let sx=(img.width-min)/2
+let sy=(img.height-min)/2
+
+ctx.clearRect(0,0,canvas.width,canvas.height)
+
+ctx.drawImage(
+img,
+sx,sy,
+min,min,
+0,0,
+canvas.width,
+canvas.height
+)
+
+}
+
+function downloadImage(){
+
+let format=document.getElementById("downloadFormat").value
+
+let link=document.createElement("a")
+
+link.download="passport-photo"
+
+link.href=canvas.toDataURL(format)
+
+link.click()
+
+}
+
+</script>
+
 </body>
 </html>
