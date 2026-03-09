@@ -7,30 +7,23 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
 
-:root {
-  --primary-gradient: linear-gradient(45deg, #f97316, #f43f5e);
-}
-
-.donate-fab {
-  position: fixed;
-  top: 20px;
-  right: 20px;
-  z-index: 999;
-  background: var(--primary-gradient);
-  color: white;
-  border: none;
-  padding: 12px 24px;
-  border-radius: 50px;
-  font-weight: bold;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  box-shadow: 0 4px 15px rgba(244, 63, 94, 0.3);
-  transition: transform 0.2s;
-}
-
-.donate-fab:hover { transform: scale(1.05); }
+        .donate-btn {
+            background: var(--primary-gradient);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 50px;
+            font-weight: bold;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 4px 10px rgba(244, 63, 94, 0.2);
+            transition: transform 0.2s;
+            white-space: nowrap;
+            text-decoration: none;
+            font-size: 14px;
+        }
 
 .donate-overlay {
   display: none;
@@ -144,6 +137,7 @@
 .donate-content::-webkit-scrollbar-thumb { background: #e5e7eb; border-radius: 10px; }
         
         :root {
+            --primary-gradient: linear-gradient(45deg, #f97316, #f43f5e);
             --primary-blue: #2563eb;
             --dark-blue: #1e40af;
             --light-blue: #93c5fd;
@@ -190,7 +184,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            position: relative; /* Centering support */
+            position: relative;
         }
         
         .logo {
@@ -198,25 +192,58 @@
             font-weight: 700;
             color: var(--primary-blue);
             text-decoration: none;
-            z-index: 10;
+            z-index: 20;
+            flex-shrink: 0;
         }
         
         .logo span {
             color: var(--text-dark);
         }
         
-        .menu{
-        display:flex;
-        justify-content:center;
-        list-style:none;
-        gap:20px;
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            z-index: 20;
+        }
+
+        .donate-btn {
+            background: var(--primary-gradient);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 50px;
+            font-weight: bold;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 4px 10px rgba(244, 63, 94, 0.2);
+            transition: transform 0.2s;
+            white-space: nowrap;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .donate-btn:hover {
+            transform: scale(1.05);
+        }
+
+        .donate-btn svg {
+            width: 16px;
+            height: 16px;
         }
         
         nav {
-            position: absolute;
-            left: 50%;
-            transform: translateX(-50%);
-            z-index: 5;
+            z-index: 10;
+        }
+
+        @media (min-width: 769px) {
+            nav {
+                position: absolute;
+                left: 50%;
+                transform: translateX(-50%);
+            }
         }
 
         nav ul {
@@ -579,19 +606,18 @@
         
         @media (max-width: 768px) {
             .header-container {
-                flex-direction: row;
-                justify-content: space-between;
+                flex-wrap: wrap;
                 padding: 10px 20px;
             }
             
             nav {
                 display: none;
-                position: static;
-                transform: none;
                 width: 100%;
                 background: white;
-                box-shadow: var(--shadow);
-                padding: 20px;
+                padding: 20px 0;
+                order: 3;
+                border-top: 1px solid #f1f5f9;
+                margin-top: 10px;
             }
 
             nav ul {
@@ -627,6 +653,15 @@
             .mobile-menu-btn {
                 display: block;
             }
+
+            .donate-btn span {
+                display: none;
+            }
+            
+            .donate-btn {
+                padding: 10px;
+                border-radius: 50%;
+            }
         }
         
         @media (max-width: 576px) {
@@ -659,12 +694,7 @@
     </style>
 </head>
 <body>
-    <!-- Donate Button & Overlay (Moved outside nav for better control) -->
-    <button class="donate-fab" onclick="toggleDonate(true)">
-      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>
-      Donate
-    </button>
-
+    <!-- Donation Popup Overlay -->
     <div class="donate-overlay" id="donateOverlay" onclick="handleOverlayClick(event)">
       <div class="donate-modal">
         <div class="donate-header">
@@ -745,9 +775,15 @@
                 </ul>
             </nav>
             
-            <button class="mobile-menu-btn">
-                <i class="fas fa-bars"></i>
-            </button>
+            <div class="header-right">
+                <button class="donate-btn" onclick="toggleDonate(true)">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>
+                    <span>Donate</span>
+                </button>
+                <button class="mobile-menu-btn">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
         </div>
     </header>
     
@@ -1383,7 +1419,11 @@ background:#007fff;
         // Mobile menu toggle functionality
         document.querySelector('.mobile-menu-btn').addEventListener('click', function() {
             const nav = document.getElementById('mainNav');
-            nav.style.display = (nav.style.display === 'block' || nav.style.display === 'flex') ? 'none' : 'block';
+            if (nav.style.display === 'block') {
+                nav.style.display = 'none';
+            } else {
+                nav.style.display = 'block';
+            }
         });
         
         // Search functionality
