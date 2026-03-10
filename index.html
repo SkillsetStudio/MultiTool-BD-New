@@ -628,7 +628,31 @@
                 gap: 15px;
                 align-items: center;
             }
-            
+            .submenu {
+  display: none; /* Hides the submenu */
+  position: absolute; /* Positions the submenu relative to its parent */
+  background-color: white;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+}
+
+.menu li:hover .submenu {
+  display: block; /* Shows the submenu on hover */
+}
+
+/* Additional styling for layout */
+.menu, .submenu {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+.menu li {
+  position: relative; /* Essential for positioning the absolute submenu */
+  display: inline-block;
+}
+
             .hero {
                 padding: 60px 0;
             }
@@ -773,13 +797,14 @@
             <nav id="mainNav">
                 <ul class="menu">
                     <li><a href="#home">Home</a></li>
-                    <li class="dropdown"><a href="#tools" class="dropbtn">Tools ▼</a>
-                        <ul class="dropdown-menu">
-                        <li><a href="#">Image Tools</a></li>
-                        <li><a href="#">PDF Tools</a></li>
-                        <li><a href="#">Text Tools</a></li>
-                        <li><a href="#">Developer Tools</a></li>
-                        <li><a href="#">SEO Tools</a></li>
+                    <li class="has-submenu">
+                        <a href="#tools">Tools &#9662;</a>
+                        <ul class="submenu">
+                            <li><a href="#">Image Tools</a></li>
+                            <li><a href="#">PDF Tools</a></li>
+                            <li><a href="#">Text Tools</a></li>
+                            <li><a href="#">Developer Tools</a></li>
+                            <li><a href="#">SEO Tools</a></li>
                         </ul>
                     </li>
                     
@@ -1527,6 +1552,34 @@ background:#007fff;
           document.body.style.overflow = show ? 'hidden' : 'auto';
         }
 
+// Get all parent menu items with submenus
+const submenuItems = document.querySelectorAll('.has-submenu');
+
+submenuItems.forEach(item => {
+  const link = item.querySelector('a');
+  // Prevent the link from navigating immediately if it's just a toggle
+  link.addEventListener('click', function(e) {
+    e.preventDefault();
+    // Toggle the visibility of the next sibling element (the submenu UL)
+    const submenu = this.nextElementSibling;
+    if (submenu.style.display === 'block') {
+      submenu.style.display = 'none';
+    } else {
+      submenu.style.display = 'block';
+    }
+  });
+});
+
+// Optional: Close submenus when clicking outside
+document.addEventListener('click', function(e) {
+  submenuItems.forEach(item => {
+    if (!item.contains(e.target)) {
+      item.querySelector('.submenu').style.display = 'none';
+    }
+  });
+});
+
+        
         function handleOverlayClick(e) {
           if (e.target.id === 'donateOverlay') toggleDonate(false);
         }
