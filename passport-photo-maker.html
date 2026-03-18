@@ -1,30 +1,635 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Passport Photo Maker Tool</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>Free Passport Size Photo Maker Online (US, UK, India) | MultiTool-BD</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.css"/>
+    
+    <style>
+    input, select, button {
+      width: 100%;
+      margin-top: 1rem;
+      padding: 0.5rem;
+      border: 2px solid #2563eb;
+      border-radius: 8px;
+      font-size: 1rem;
+      color: #2563eb;
+      background-color: #ffffff;
+    }
+    button {
+      background-color: #2563eb;
+      color: white;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #1e40af;
+    }
+    img {
+      max-width: 100%;
+      margin-top: 1rem;
+      border-radius: 8px;
+    }
+    .download-btn {
+      display: inline-block;
+      margin-top: 1rem;
+      padding: 0.5rem 1rem;
+      background-color: #2563eb;
+      color: white;
+      text-align: center;
+      border-radius: 8px;
+      text-decoration: none;
+    }
+    .download-btn:hover {
+      background-color: #1e40af;
+    }
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.css"/>
+        .donate-btn {
+            background: var(--primary-gradient);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 50px;
+            font-weight: bold;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 4px 10px rgba(244, 63, 94, 0.2);
+            transition: transform 0.2s;
+            white-space: nowrap;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+.donate-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.6);
+  backdrop-filter: blur(4px);
+  z-index: 1000;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+
+.donate-modal {
+  background: white;
+  width: 100%;
+  max-width: 420px;
+  max-height: 90vh;
+  border-radius: 24px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25);
+  animation: slideUp 0.3s ease-out;
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(20px) scale(0.95); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.donate-header {
+  padding: 24px;
+  border-bottom: 1px solid #f3f4f6;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.donate-header h2 { margin: 0; font-size: 22px; color: #111827; }
+.donate-header p { margin: 4px 0 0; font-size: 14px; color: #6b7280; }
+
+.close-x {
+  background: none; border: none; font-size: 28px; color: #9ca3af; cursor: pointer;
+}
+
+.donate-content {
+  padding: 24px;
+  overflow-y: auto;
+}
+
+.method-item { margin-bottom: 24px; }
+.method-label { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+.method-label h3 { margin: 0; font-size: 16px; color: #374151; }
+
+.icon-box {
+  width: 32px; height: 32px; border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  color: white; font-weight: bold;
+}
+
+.btc-bg { background: #f59e0b; }
+.usdt-bg { background: #10b981; }
+.merchant-bg { background: #ec4899; } /* Pink */
+.binance-bg { background: #f3ba2f; color: black; }
+
+.address-container {
+  background: #f9fafb; border: 1px solid #e5e7eb;
+  padding: 12px; border-radius: 12px;
+  display: flex; justify-content: space-between; align-items: center;
+}
+
+.address-text {
+  font-family: monospace; font-size: 13px; color: #4b5563;
+  word-break: break-all; margin-right: 10px;
+}
+
+.copy-btn {
+  background: none; border: none; color: #9ca3af; cursor: pointer; padding: 4px;
+}
+
+.bkash-card {
+  padding: 16px; border-radius: 12px; text-align: center;
+}
+
+.merchant-border { background: #fff1f2; border: 1px solid #fecdd3; }
+
+.bkash-num { font-weight: bold; font-size: 18px; margin: 0; }
+
+.merchant-text { color: #be123c; }
+
+.merchant-details {
+  margin-top: 10px; padding-top: 10px; border-top: 1px dashed #fda4af;
+  display: flex; justify-content: space-around; font-size: 11px; color: #e11d48;
+  text-transform: uppercase; font-weight: 600;
+}
+        
+.binance-link {
+  display: block; width: 100%; background: #f3ba2f; color: black;
+  text-decoration: none; text-align: center; padding: 14px;
+  border-radius: 12px; font-weight: bold; transition: background 0.2s;
+}
+
+.binance-link:hover { background: #eab308; }
+
+.donate-footer { padding: 16px; text-align: center; background: #f9fafb; }
+.donate-footer button { background: none; border: none; color: #9ca3af; cursor: pointer; font-size: 14px; }
+
+/* Scrollbar Style */
+.donate-content::-webkit-scrollbar { width: 5px; }
+.donate-content::-webkit-scrollbar-thumb { background: #e5e7eb; border-radius: 10px; }
+        
+        :root {
+            --primary-gradient: linear-gradient(45deg, #f97316, #f43f5e);
+            --primary-blue: #2563eb;
+            --dark-blue: #1e40af;
+            --light-blue: #93c5fd;
+            --bg-gray: #f8fafc;
+            --text-dark: #1e293b;
+            --text-light: #64748b;
+            --white: #ffffff;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --rounded: 8px;
+            --transition: all 0.3s ease;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: var(--bg-gray);
+            color: var(--text-dark);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* Header */
+        header {
+            background-color: var(--white);
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            padding: 15px 0;
+        }
+        
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+        }
+        
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary-blue);
+            text-decoration: none;
+            z-index: 20;
+            flex-shrink: 0;
+        }
+        
+        .logo span {
+            color: var(--text-dark);
+        }
+        
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            z-index: 20;
+        }
+
+        .donate-btn {
+            background: var(--primary-gradient);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 50px;
+            font-weight: bold;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 4px 10px rgba(244, 63, 94, 0.2);
+            transition: transform 0.2s;
+            white-space: nowrap;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .donate-btn:hover {
+            transform: scale(1.05);
+        }
+
+        .donate-btn svg {
+            width: 16px;
+            height: 16px;
+        }
+        
+        nav {
+            z-index: 10;
+        }
+
+        @media (min-width: 769px) {
+            nav {
+                position: absolute;
+                left: 50%;
+                transform: translateX(-50%);
+            }
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 25px;
+        }
+        
+        nav ul li a {
+            text-decoration: none;
+            color: var(--text-dark);
+            font-weight: 500;
+            transition: var(--transition);
+        }
+        
+        nav ul li a:hover {
+            color: var(--primary-blue);
+        }
+        
+        .contact-email {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            color: var(--text-light);
+            font-size: 14px;
+        }
+        
+        .contact-email i {
+            color: var(--primary-blue);
+        }
+        
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 24px;
+            color: var(--primary-blue);
+            cursor: pointer;
+            z-index: 10;
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--text-dark);
+            color: var(--white);
+            padding: 60px 0 30px;
+        }
+        
+        .footer-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 50px;
+            margin-bottom: 40px;
+        }
+        
+        .footer-logo {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--white);
+            margin-bottom: 15px;
+            display: block;
+        }
+        
+        .footer-logo span {
+            color: var(--light-blue);
+        }
+        
+        .footer-about p {
+            opacity: 0.8;
+            margin-bottom: 20px;
+            font-size: 0.95rem;
+        }
+        
+        .footer-contact p {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+            opacity: 0.8;
+            
+        }
+        
+        .footer-links h3 {
+            font-size: 1.1rem;
+            margin-bottom: 20px;
+            color: var(--white);
+            padding-left: 60px;
+        }
+        
+        .footer-links ul {
+            list-style: none;
+            padding-left: 60px;
+        }
+        
+        .footer-links ul li {
+            margin-bottom: 10px;
+        }
+        
+        .footer-links ul li a {
+            color: var(--white);
+            text-decoration: none;
+            opacity: 0.8;
+            transition: var(--transition);
+        }
+        
+        .footer-links ul li a:hover {
+            opacity: 1;
+            color: var(--light-blue);
+        }
+        
+        .footer-bottom {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 0.9rem;
+            opacity: 0.7;
+        }
+
+         /* Responsive */
+        @media (max-width: 992px) {
+            .hero h1 {
+                font-size: 2.2rem;
+            }
+            
+            .tool-icon {
+                width: 50px;
+                height: 50px;
+                font-size: 20px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .header-container {
+                flex-wrap: wrap;
+                padding: 10px 20px;
+            }
+            
+            nav {
+                display: none;
+                width: 100%;
+                background: white;
+                padding: 20px 0;
+                order: 3;
+                border-top: 1px solid #f1f5f9;
+                margin-top: 10px;
+            }
+
+            nav ul {
+                flex-direction: column;
+                gap: 15px;
+                align-items: center;
+            }
+
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            .donate-btn span {
+                display: none;
+            }
+            
+            .donate-btn {
+                padding: 10px;
+                border-radius: 50%;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            
+            .tools-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .footer-container {
+                grid-template-columns: 1fr;
+            }
+        }
+
+/* Hide the link that should open and close the topnav on small screens */
+.topnav .icon {
+  display: none;
+}
+
+/* Dropdown container - needed to position the dropdown content */
+.dropdown {
+  float: left;
+  overflow: hidden;
+}
+
+/* Style the dropdown button to fit inside the topnav */
+.dropdown .dropbtn {
+  font-size: 17px;
+  border: none;
+  outline: none;
+  color: #1e293b;
+  background-color: inherit;
+  font-family: inherit;
+  margin: 0;
+  padding: 0;
+  font-weight: 500;
+}
+
+/* Style the dropdown content (hidden by default) */
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f9f9f9;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+}
+
+/* Style the links inside the dropdown */
+.dropdown-content a {
+  float: none;
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+  text-align: left;
+}
+
+/* Add a dark background on topnav links and the dropdown button on hover */
+.topnav a:hover, .dropdown:hover .dropbtn {
+  background-color: #555;
+  color: white;
+}
+
+/* Add a grey background to dropdown links on hover */
+.dropdown-content a:hover {
+  background-color: #ddd;
+  color: #2563eb;
+}
+
+/* Show the dropdown menu when the user moves the mouse over the dropdown button */
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
+/* When the screen is less than 600 pixels wide, hide all links, except for the first one ("Home"). Show the link that contains should open and close the topnav (.icon) */
+@media screen and (max-width: 600px) {
+  .topnav a:not(:first-child), .dropdown .dropbtn {
+    display: none;
+  }
+  .topnav a.icon {
+    float: right;
+    display: block;
+  }
+}
+
+/* The "responsive" class is added to the topnav with JavaScript when the user clicks on the icon. This class makes the topnav look good on small screens (display the links vertically instead of horizontally) */
+@media screen and (max-width: 600px) {
+  .topnav.responsive {position: relative;}
+  .topnav.responsive a.icon {
+    position: absolute;
+    right: 0;
+    top: 0;
+  }
+  .topnav.responsive a {
+    float: none;
+    display: block;
+    text-align: left;
+  }
+  .topnav.responsive .dropdown {float: none;}
+  .topnav.responsive .dropdown-content {position: relative;}
+  .topnav.responsive .dropdown .dropbtn {
+    display: block;
+    width: 100%;
+    text-align: left;
+  }
+}
+
+.icon-border{
+  border:2px solid #3498db;
+  padding:10px;
+  border-radius:8px;
+  margin-right:8px;
+}
+    
+
+/* TOOL AREA */
+
+.tool-container{
+max-width:900px;
+margin:60px auto;
+background:white;
+padding:40px;
+border-radius:8px;
+box-shadow:var(--shadow);
+text-align:center;
+}
+
+.tool-container input,
+.tool-container select{
+padding:10px;
+margin:10px;
+border-radius:6px;
+border:1px solid #ccc;
+}
+
+.tool-container button{
+background:var(--primary-blue);
+color:white;
+border:none;
+padding:10px 18px;
+border-radius:6px;
+cursor:pointer;
+font-weight:500;
+}
+
+.tool-container button:hover{
+background:var(--dark-blue);
+}
+
+#previewContainer{
+margin-top:25px;
+}
+
+#previewContainer img{
+max-width:100%;
+border-radius:6px;
+margin-top:10px;
+box-shadow:var(--shadow);
+}
+
+.download-btn{
+display:inline-block;
+margin-top:15px;
+background:#10b981;
+color:white;
+padding:10px 18px;
+border-radius:6px;
+text-decoration:none;
+font-weight:500;
+}
+
+/* SEO CONTENT */
+.seo-content{
+text-align:left;
+max-width:700px; 
+margin:2rem auto; 
+font-family:Arial, sans-serif; 
+color:#1e293b; 
+line-height:1.6;
+}
+</style>
 
 <style>
-
-body{
-font-family: Arial, sans-serif;
-background-color:#e6f0ff;
-color:#003366;
-margin:0;
-padding:0;
-}
-
-.container{
-max-width:600px;
-margin:2rem auto;
-padding:1rem;
-background-color:#ffffff;
-border-radius:10px;
-box-shadow:0 0 10px rgba(0,0,0,0.1);
-}
 
 h1{
 text-align:center;
@@ -79,11 +684,117 @@ padding:1rem;
 }
 
 </style>
+
 </head>
 
 <body>
 
-<div class="container">
+<!-- Donation Popup Overlay -->
+    <div class="donate-overlay" id="donateOverlay" onclick="handleOverlayClick(event)">
+      <div class="donate-modal">
+        <div class="donate-header">
+          <div>
+            <h2>Support Us <span style="color: #f43f5e;">❤️</span></h2>
+            <p>Your support keeps MultiTool-BD alive.</p>
+          </div>
+          <button class="close-x" onclick="toggleDonate(false)">&times;</button>
+        </div>
+
+        <div class="donate-content">
+          <div class="method-item">
+            <div class="method-label">
+              <span class="icon-box btc-bg">₿</span>
+              <h3>Bitcoin</h3>
+            </div>
+            <div class="address-container">
+              <div class="address-text" id="btcAddr">1DBphcN4MtkJVabBqu3kG4JczsMAiU8hPc</div>
+              <button class="copy-btn" onclick="copyText('btcAddr', this)">
+                <svg class="copy-icon" viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+              </button>
+            </div>
+          </div>
+
+          <div class="method-item">
+            <div class="method-label">
+              <span class="icon-box usdt-bg">₮</span>
+              <h3>USDT (TRC20)</h3>
+            </div>
+            <div class="address-container">
+              <div class="address-text" id="usdtAddr">TKNjbt8XYER5GaeGw8E6z8MPgLBcGY5Qjo</div>
+              <button class="copy-btn" onclick="copyText('usdtAddr', this)">
+                <svg class="copy-icon" viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+              </button>
+            </div>
+          </div>
+
+          <div class="method-item">
+            <div class="method-label">
+              <span class="icon-box merchant-bg">M</span>
+              <h3>bKash Merchant (Payment)</h3>
+            </div>
+            <div class="bkash-card merchant-border">
+              <p class="bkash-num merchant-text">01766020093</p>
+              <p class="bkash-sub">Merchant Account • Use "Make Payment"</p>
+              <div class="merchant-details">
+                <span>Ref: <b>Donation</b></span>
+                <span>Counter: <b>1</b></span>
+              </div>
+            </div>
+          </div>
+
+          <div class="method-item">
+            <div class="method-label">
+              <span class="icon-box binance-bg">B</span>
+              <h3>Binance Pay</h3>
+            </div>
+            <a href="https://pay.binance.com/en/pay?id=778962944" target="_blank" class="binance-link">Pay with Binance</a>
+          </div>
+        </div>
+
+        <div class="donate-footer">
+          <button onclick="toggleDonate(false)">Maybe later</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Header -->
+    <header>
+        <div class="container header-container">
+            <a href="https://skillsetstudio.github.io/MultiTool-BD-New/" class="logo">MultiTool-<span>BD</span></a>
+            
+            <nav id="mainNav">
+                <ul class="menu">
+                    <li><a href="https://skillsetstudio.github.io/MultiTool-BD-New/">Home</a></li>
+                    <div class="dropdown">
+                        <button class="dropbtn">Tools
+                        <i class="fa fa-caret-down"></i>
+                        </button>
+                        <div class="dropdown-content">
+                            <li><a href="#image-tools">Image Tools</a></li>
+                            <li><a href="#pdf-tools">PDF Tools</a></li>
+                            <li><a href="#text-tools">Text Tools</a></li>
+                            <li><a href="#dev-tools">Developer Tools</a></li>
+                            <li><a href="#seo-tools">SEO Tools</a></li>
+                        </div>
+                    </div>
+                    <li><a href="contact.html">Contact</a></li>
+                </ul>
+            </nav>
+            
+            <div class="header-right">
+                <button class="donate-btn" onclick="toggleDonate(true)">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>
+                    <span>Donate</span>
+                </button>
+                <button class="mobile-menu-btn">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+<!-- TOOL AREA -->
+<div class="tool-container">
 
 <h1>Passport Photo Maker</h1>
 
@@ -190,6 +901,284 @@ link.textContent="Download Passport Photo"
 }
 
 </script>
+
+<!-- SEO Content Section -->
+
+<div class="seo-content">
+
+<h1>Free Passport Size Photo Maker Online</h1>
+
+<p>
+Create professional <strong>passport size photos online for free</strong> with our easy-to-use tool. This online passport photo maker allows you to crop, resize, and download photos in official sizes required for different countries like the USA, UK, India, and more.
+</p>
+
+<p>
+Whether you need a photo for a passport, visa, job application, or ID card, this tool helps you generate a <strong>perfect passport size image in seconds</strong> without visiting a studio.
+</p>
+
+<p>
+Everything works directly in your browser, ensuring your images stay <strong>private and secure</strong>.
+</p>
+
+</div>
+
+
+<div class="seo-content">
+
+<h2>How to Make Passport Size Photo Online</h2>
+
+<p>Follow these simple steps to create your passport photo:</p>
+
+<ol>
+<li>Upload your image using the file upload option.</li>
+<li>Select your required passport size (US, UK/EU, China, etc.).</li>
+<li>Crop your photo using the built-in editor.</li>
+<li>Click on <strong>Generate Passport Photo</strong>.</li>
+<li>Download your passport size image instantly.</li>
+</ol>
+
+<p>
+This tool makes it easy to <strong>create passport photos online free</strong> with accurate dimensions.
+</p>
+
+</div>
+
+
+<div class="seo-content">
+
+<h2>Benefits of Passport Photo Maker Tool</h2>
+
+<ul>
+
+<li><strong>100% Free to Use</strong><br>
+Create passport size photos online without any cost.</li>
+
+<li><strong>Multiple Country Sizes</strong><br>
+Supports US (2x2 inch), UK/EU (35x45 mm), China, and custom sizes.</li>
+
+<li><strong>Instant Download</strong><br>
+Generate and download your passport photo within seconds.</li>
+
+<li><strong>No Software Required</strong><br>
+Works directly in your browser on any device.</li>
+
+<li><strong>Safe & Secure</strong><br>
+Your images are processed locally and never uploaded.</li>
+
+<li><strong>Mobile Friendly</strong><br>
+Use the tool easily on Android, iPhone, or desktop.</li>
+
+</ul>
+</div>
+
+
+<div class="seo-content">
+
+<h2>FAQs</h2>
+
+<p><strong>Q1: Can I make passport size photo online for free?</strong></p>
+<p>
+Yes, this tool allows you to create passport size photos online free without any signup.
+</p>
+
+<p><strong>Q2: What size is a passport photo?</strong></p>
+<p>
+Different countries have different sizes. For example:
+US: 2x2 inches, UK/EU: 35x45 mm.
+</p>
+
+<p><strong>Q3: Is this passport photo maker safe?</strong></p>
+<p>
+Yes, your images are processed in your browser and are never uploaded to any server.
+</p>
+
+<p><strong>Q4: Can I use this tool on mobile?</strong></p>
+<p>
+Yes, this tool is fully responsive and works on all devices.
+</p>
+
+<p><strong>Q5: Which format can I download?</strong></p>
+<p>
+You can download your passport photo in PNG, JPG, or WebP format.
+</p>
+
+</div>
+
+<!-- Footer -->
+    <footer id="contact">
+        <div class="container">
+            <div class="footer-container">
+                <div class="footer-about">
+                    <a href="#" class="footer-logo">MultiTool-<span>BD</span></a>
+                    <p>Your one-stop Destination for all Online Utility Tools. Fast, Free, and Secure.</p>
+                </div>
+                
+                <style>
+            .footer-contact{
+              max-width:400px;
+              margin:auto;
+              font-family:Arial;
+            }
+
+.footer-contact h3{
+margin-bottom:20px;
+font-size:18px;
+color:#ffffff;
+}
+
+.footer-contact input,
+.footer-contact textarea{
+width:100%;
+padding:8px;
+margin-bottom:8px;
+border:1px solid #ccc;
+border-radius:4px;
+font-size:14px;
+}
+
+.footer-contact textarea{
+resize:none;
+height:70px;
+}
+
+.footer-contact button{
+width:100%;
+padding:10px;
+background:#204cc3;
+border:none;
+color:white;
+font-size:14px;
+border-radius:4px;
+cursor:pointer;
+}
+
+.footer-contact button:hover{
+background:#007fff;
+}  
+
+.footer-col h3{
+margin-bottom:15px;
+font-size:18px;
+}
+
+.social-icons a{
+display:inline-block;
+width:35px;
+height:35px;
+line-height:35px;
+text-align:center;
+border-radius:50%;
+background:#1e293b;
+color:white;
+margin-right:8px;
+transition:0.3s;
+}
+
+.social-icons a:hover{
+background:#3b82f6;
+}
+
+.dev-link{
+color:white;
+font-weight:bold;
+text-decoration:none;
+}
+
+.dev-link:hover{
+color:#3b82f6;
+}
+</style>
+                
+<div class="footer-contact">
+<h3>Contact Us</h3>
+<form action="https://formspree.io/f/xaqpnpeq" method="POST">
+<input type="text" name="name" placeholder="Name" required>
+<input type="email" name="email" placeholder="Email" required>
+<textarea name="message" placeholder="Comment" required></textarea>
+<button type="submit">Send Message</button>
+</form>
+</div>
+
+                <div class="footer-links">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="#home">Home</a></li>
+                        <li><a href="about-us.html">About</a></li>
+                        <li><a href="disclaimer.html">Disclaimer</a></li>
+                        <li><a href="privacy-policy.html">Privacy Policy</a></li>
+                        <li><a href="terms-and-conditions.html">Terms of Use</a></li>
+                    </ul>
+                </div>
+
+                <!-- Social Links -->
+                <div class="footer-col">
+                    <h3>Follow Us</h3>
+                    <div class="social-icons">
+                        <a href="https://facebook.com/RAYHAN.UDDIN.KHAN"><i class="fab fa-facebook-f"></i></a>
+                        <a href="https://x.com/Rayhan020093"><i class="fab fa-twitter"></i></a>
+                        <a href="https://www.youtube.com/@SkillsetStudio"><i class="fab fa-youtube"></i></a>
+                        <a href="https://github.com/SkillsetStudio"><i class="fab fa-github"></i></a>
+                    </div>
+                </div>
+            </div>
+            <!-- Bottom Footer -->
+<div class="footer-bottom">
+<p>
+© 2026 MultiTool-BD. All rights reserved | 
+Developed by 
+<a href="https://facebook.com/RAYHAN.UDDIN.KHAN" target="_blank" class="dev-link">
+Rayhan Uddin Khan
+</a>
+</p>
+</div> 
+        </div>
+    </footer>
+    
+    <script>
+        // Mobile menu toggle functionality
+        document.querySelector('.mobile-menu-btn').addEventListener('click', function() {
+            const nav = document.getElementById('mainNav');
+            if (nav.style.display === 'block') {
+                nav.style.display = 'none';
+            } else {
+                nav.style.display = 'block';
+            }
+        });
+        
+        //Donate Button 
+        function toggleDonate(show) {
+          const overlay = document.getElementById('donateOverlay');
+          overlay.style.display = show ? 'flex' : 'none';
+          // Prevent body scroll when open
+          document.body.style.overflow = show ? 'hidden' : 'auto';
+        }
+
+        function handleOverlayClick(e) {
+          if (e.target.id === 'donateOverlay') toggleDonate(false);
+        }
+
+        async function copyText(id, btn) {
+          const text = document.getElementById(id).innerText;
+          try {
+            await navigator.clipboard.writeText(text);
+            const originalHTML = btn.innerHTML;
+            btn.innerHTML = '<span style="color: #10b981">✓</span>';
+            setTimeout(() => { btn.innerHTML = originalHTML; }, 2000);
+          } catch (err) {
+            console.error('Failed to copy: ', err);
+          }
+        }
+        /* Toggle between adding and removing the "responsive" class to topnav when the user clicks on the icon */
+function myFunction() {
+  var x = document.getElementById("myTopnav");
+  if (x.className === "topnav") {
+    x.className += " responsive";
+  } else {
+    x.className = "topnav";
+  }
+}
+
+    </script>
 
 </body>
 </html>
